@@ -39,6 +39,7 @@ The dashboard includes analysis of:
   ## Project Files
   - 'Superstore_Analysis.ipynb'- Python-based data presentation, analysis, and visualization.
   - 'Superstore_Sales_Dashboard.pbix'- Interactive Power BI dashboard.
+  - 'Superstore SQL Project.sql'- SQL-based data analysis and querying for Superstore sales data, focusing on sales, profit, product, customer, regional, and shipping performance.
     ## Skills Demonstrated
   - Data Cleaning and Preparation
   - Exploratory Data Analysis
