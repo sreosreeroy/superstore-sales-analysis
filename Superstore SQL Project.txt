@@ -1,0 +1,841 @@
+--Step 1: Create Database
+CREATE DATABASE superstore_db;
+
+--Explanation: This step creates a new PostgreSQL database named
+superstore_db to store and manage the Superstore project data.
+
+--Step 2: Connect to Database
+\c superstore_db
+
+--Explanation: This step connects to the superstore_db database
+so that tables can be created and SQL queries can be executed.
+
+--Step 3: Create Customers Table
+CREATE TABLE customers(
+  customer_id VARCHAR(20)
+PRIMARY KEY,
+  customer_name VARCHAR(100) ,
+  segment VARCHAR(50) ,
+  country VARCHAR(50) ,
+  city VARCHAR(50) ,
+  state VARCHAR(50) ,
+  postal_code INT ,
+  region VARCHAR(50) 
+);
+
+--Explanation: This step creates the customers table to store customer information
+such as customer ID, customer name, segment, country, city, state, postal code and region.
+
+--Step 4: Create Products Table
+CREATE TABLE products(
+  product_id VARCHAR(30)
+PRIMARY KEY,
+  product_name VARCHAR(200) ,
+  category VARCHAR(50), 
+  sub_category VARCHAR(50)
+  );
+
+--Explanation: This step creates the products table to store product details
+including Product ID, category, sub-category, and product name.
+
+--Step 5: Create Orders Table
+CREATE TABLE orders(
+row_id INT PRIMARY KEY,
+order_id VARCHAR(30),
+order_date DATE,
+ship_date DATE,
+ship_mode VARCHAR(30),
+customer_id VARCHAR(20),
+product_id VARCHAR(30),
+sales DECIMAL(10,2),
+quantity INT,
+discount DECIMAL(5,2),
+profit DECIMAL(10,2),
+order_year INT,
+order_month VARCHAR(20),
+order_quarter VARCHAR(10),
+order_day INT,
+shipping_days INT,
+
+FOREIGN KEY (customer_id)
+    REFERENCES 
+ customers(customer_id),
+ 
+FOREIGN KEY (product_id)
+     REFERENCES 
+products(product_id)
+);
+
+--Explanation: This step creates the orders table to store transaction details and
+establishes relationships with the customers and products tables using foreign keys.
+
+--Step 6: Import CSV Files into PostgreSQL
+Import:
+
+--customers.csv -> customers
+--products.csv -> products
+--orders.csv -> orders
+
+--Explanation: This step imports the cleaned customers.csv, products.csv, and
+orders.csv files into their respective PostgreSQL tables for analysis.
+
+--Step 7: Verify Imported Data
+SELECT * FROM customers LIMIT 5;
+SELECT * FROM products LIMIT 5;
+SELECT * FROM orders LIMIT 5;
+
+--Explanation: This step verifies that the data has been imported successfully 
+and by displaying sample records form each table before starting SQL analysis. 
+
+--Step 8: Basic SQL Analysis
+
+--Query 1: Display All Customer Records
+SELECT * FROM customers;
+
+--Explanation: This query displays all records from the customers table to understand
+the customer information available for analysis.
+
+--Query 2: Display All Product Records
+SELECT * FROM products;
+
+--Explanation: Displays all records from the products table to review the available products.
+
+--Query 3: Display All Order Records
+SELECT * FROM orders;
+
+--Explanation: Displays all order transactions stored in the orders table. 
+
+--Query 4: Count Total Number of Customers
+SELECT COUNT(*) AS total_customers
+FROM customers;
+
+--Explanation: Counts the total number of customers in the dataset.
+
+--Query 5: Count Total Number of Products
+SELECT COUNT(*) AS total_products
+FROM products;
+
+--Explanation: Counts the total number of unique products.
+
+--Query 6: Count Total Number of Orders
+SELECT COUNT(*) AS total_orders
+FROM orders;
+
+--Explanation: Counts the total number of  order transactions.
+
+--Query 7: Display Unique Customer Segments
+SELECT DISTINCT segment
+FROM customers;
+
+--Explanation: Displays all unique customer segments present in the business.
+
+--Query 8: Display Unique Product Categories
+SELECT DISTINCT category
+FROM products;
+
+--Explanation: Displays all unique product categories available for sale.
+
+--Query 9: Display Unique Product Sub_Categories 
+SELECT DISTINCT sub_category
+FROM products;
+
+--Explanation: Displays all unique product sub-categories. 
+
+--Query 10: Display Customers Sorted by Customer Name
+SELECT *
+FROM customers
+ORDER BY customer_name;
+
+--Explanation: Sorts customer records alphabetically by customer name.
+
+--Query 11: Display Products Sorted by Product Name
+SELECT *
+FROM products
+ORDER BY product_name;
+
+--Explanation: Sorts products alphabetically by product name.
+
+--Query 12: Display Orders Sorted by Highest Sales
+SELECT *
+FROM orders
+ORDER BY sales DESC;
+
+--Explanation: Display orders in descending order of sales to identify high-value transactions.
+
+--Query 13: Display Orders with Sales Greater Than 1000
+SELECT *
+FROM orders
+WHERE sales > 1000;
+
+--Explanation: Retrieves orders where sales exceed 1000 to identify large sales.
+
+--Query 14: Display Orders with Profit Greater Than 500
+SELECT *
+FROM orders
+WHERE profit > 500;
+
+--Explanation: Retrieves highly profitable orders with profit greater than 500.
+
+--Query 15: Display Orders with Discount Greater Than 20%
+SELECT *
+FROM orders
+WHERE discount > 0.20;
+
+--Explanation: Displays orders that received discounts greater Than 20%.
+
+--Query 16: Display Customers Belonging to the Consumer Segment
+SELECT *
+FROM customers
+WHERE segment ='Consumer';
+
+--Explanation: Filters customers belonging to the consumer segment.
+
+--Query 17: Display Customers from the West Region
+SELECT *
+FROM customers
+WHERE region ='West';
+
+--Explanation: Displays all customers located in the West Region.
+
+--Query 18: Display Products in the Technology Category
+SELECT *
+FROM products
+WHERE category = 'Technology';
+
+--Explanation: Retrieves all products belonging to the Technology category.
+
+--Query 19: Display Products in the Furniture Category
+SELECT *
+FROM products
+WHERE category = 'Furniture';
+
+--Explanation: Retrieves all products belonging to the Furniture category.
+
+--Query 20: Display Orders Sorted by Order Date
+SELECT *
+FROM orders
+ORDER BY order_date; 
+
+--Explanation: Sorts orders cronologically using the order date.
+
+--Query 21: Calculate Total Sales
+SELECT SUM(sales) AS total_sales
+FROM orders;
+
+--Explanation: Calculates the total sales generated by the business.
+
+--Query 22: Calculate Total Profit
+SELECT SUM(profit) AS total_profit
+FROM orders;
+
+--Explanation: Calculates the total profit earned across all orders.
+
+--Query 23: Calculate Average Sales
+SELECT ROUND(AVG(sales),2) AS average_sales 
+FROM orders;
+
+--Explanation: Computes the average sales amount per order.
+
+--Query 24: Calculate Average Profit
+SELECT ROUND(AVG(profit),2) AS average_profit 
+FROM orders;
+
+--Explanation: Computes the average profit earned per order.
+
+--Query 25: Find Maximum Sales
+SELECT MAX(sales) AS highest_sales
+FROM orders;
+
+--Explanation: Finds the highest sales value recorded.
+
+--Query 26: Find Minimum Sales
+SELECT MIN(sales) AS lowest_sales
+FROM orders;
+
+--Explanation: Finds the lowest sales value recorded.
+
+--Query 27: Find Maximum Profit
+SELECT MAX(profit) AS highest_profit
+FROM orders;
+
+--Explanation: Finds the highest profit generated from a single order.
+
+--Query 28: Find Minimum Profit
+SELECT MIN(profit) AS lowest_profit
+FROM orders;
+
+--Explanation: Finds the lowest profit recorded from an order.
+
+--Query 29: Calculate Total Quantity Sold
+SELECT SUM( quantity) AS total_quantity   
+FROM orders;
+
+--Explanation: Calculates the total quantity of products sold.
+
+--Query 30: Calculate Average Discount
+SELECT ROUND(AVG(discount),2) AS average_discount
+FROM orders;
+
+--Explanation: Calculates the average discount offered across all orders.
+
+--Query 31: Total Customers by Segment
+SELECT
+segment,
+COUNT(customer_id) AS
+total_customers
+FROM customers
+GROUP BY segment;
+
+--Explanation: Counts the number of customers in each customer segment.
+
+--Query 32: Total Customers by Region
+SELECT
+region,
+COUNT(customer_id) AS
+total_customers
+FROM customers
+GROUP BY region;
+
+--Explanation: Counts the number of customers in each region.
+
+--Query 33: Total Customers by State
+SELECT
+state,
+COUNT(customer_id) AS
+total_customers
+FROM customers
+GROUP BY state
+ORDER BY total_customers DESC;
+
+--Explanation: Counts customers in every state and ranks states by customer count.
+
+--Query 34: Number of Products by Category
+SELECT
+category,
+COUNT(product_id) AS
+total_products
+FROM products
+GROUP BY category;
+
+--Explanation: Counts the number of products available in each category.
+
+--Query 35: Number of Products by sub-category
+SELECT
+sub_category,
+COUNT(product_id) AS
+total_products
+FROM products
+GROUP BY sub_category
+ORDER BY total_products DESC;
+
+--Explanation: Counts the number of products in each sub-category.  
+
+--Query 36: Total Sales by Order Year
+SELECT order_year,
+SUM(sales) AS total_sales  
+FROM orders
+GROUP BY order_year
+ORDER BY order_year;
+
+--Explanation: Calculates yearly sales to analyze business growth over time.
+
+--Query 37: Total Profit by Order Year
+SELECT order_year,
+SUM(profit) AS total_profit 
+FROM orders
+GROUP BY order_year
+ORDER BY order_year;
+
+--Explanation: Calculates yearly profit to evaluate yearly business performance.
+
+--Query 38: Total Sales by Ship Mode
+SELECT ship_mode, 
+SUM(sales) AS total_sales  
+FROM orders
+GROUP BY ship_mode 
+ORDER BY total_sales DESC;
+
+--Explanation: Calculates total sales generated through each Shipping mode.
+
+--Query 39: Display Years Having Sales Greater Than ?100,000
+SELECT order_year,
+SUM(sales) AS total_sales  
+FROM orders
+GROUP BY order_year
+HAVING SUM(sales) > 100000 
+ORDER BY total_sales DESC;
+
+--Explanation: Displays years where total sales exceeded ?100,000 using th HAVING clause.
+
+--Query 40: Display Ship Modes Having More Than 100 Orders
+SELECT ship_mode, 
+COUNT(order_id) AS total_orders
+FROM orders
+GROUP BY ship_mode
+HAVING COUNT(order_id) > 100
+ORDER BY total_orders DESC;
+
+--Explanation: Displays shipping modes with more than 100 orders.
+
+--Query 41: Display Customer Name with Order Details
+SELECT 
+c.customer_name,
+o.order_id,
+o.order_date,
+o.sales
+FROM customers c
+INNER JOIN orders o
+ON c.customer_id= o.customer_id;
+
+--Explanation: Combines customer and order information using an INNER JOIN.
+
+--Query 42: Display Product Name with Sales
+SELECT 
+p.product_name,
+o.sales,
+o.profit
+FROM products p
+INNER JOIN orders o
+ON p.product_id= o.product_id;
+
+--Explanation: Displays product details along with sales and profit information.
+
+--Query 43: Display Customer Name and Product Purchased
+SELECT 
+c.customer_name,
+p.product_name,
+o.quantity
+FROM customers c
+INNER JOIN orders o
+ON c.customer_id= o.customer_id
+INNER JOIN products p
+ON o.product_id= p.product_id;
+
+--Explanation: Shows which customer purchased which product.
+
+--Query 44: Total Sales by Customer
+SELECT 
+c.customer_name,
+SUM(o.sales) AS total_sales 
+FROM customers c
+JOIN orders o
+ON c.customer_id= o.customer_id
+GROUP BY c.customer_name
+ORDER BY total_sales DESC;
+
+--Explanation: Calculates total sales generated by each customer.
+
+--Query 45: Total Profit by Customer
+SELECT 
+c.customer_name,
+SUM(o.profit) AS total_profit 
+FROM customers c
+JOIN orders o
+ON c.customer_id= o.customer_id
+GROUP BY c.customer_name
+ORDER BY total_profit DESC;
+
+--Explanation: Calculates total profit contributed by each customer.
+ 
+--Query 46: Total Sales by Category
+SELECT 
+p.category,
+SUM(o.sales) AS total_sales 
+FROM products p
+JOIN orders o
+ON p.product_id= o.product_id
+GROUP BY p.category
+ORDER BY total_sales DESC;
+
+--Explanation: Calculates total sales for each product category.
+
+--Query 47: Total  Profit by Category
+SELECT 
+p.category,
+SUM(o.profit) AS total_profit
+FROM products p
+JOIN orders o
+ON p.product_id= o.product_id
+GROUP BY p.category
+ORDER BY total_profit DESC;
+
+--Explanation: Calculates total profit earned from each product category.
+
+--Query 48: Total Sales by Sub-Category 
+SELECT 
+p.sub_category,
+SUM(o.sales) AS total_sales 
+FROM products p
+JOIN orders o
+ON p.product_id= o.product_id
+GROUP BY p.sub_category
+ORDER BY total_sales DESC;
+
+--Explanation: Calculates total sales for each product sub-category.
+
+--Query 49: Total  Profit by Sub-Category 
+SELECT 
+p.sub_category,
+SUM(o.profit) AS total_profit
+FROM products p
+JOIN orders o
+ON p.product_id= o.product_id
+GROUP BY p.sub_category
+ORDER BY total_profit DESC;
+
+--Explanation: Calculates total profit for every product sub-category.
+
+--Query 50: Average Sales by Category
+SELECT 
+p.category,
+ROUND(AVG(o.sales),2) AS average_sales 
+FROM products p
+JOIN orders o
+ON p.product_id= o.product_id
+GROUP BY p.category;
+
+--Explanation: Calculates the average sales value for each product category.
+
+--Query 51: Average Profit by Category
+SELECT 
+p.category,
+ROUND(AVG(o.profit),2) AS average_profit
+FROM products p
+JOIN orders o
+ON p.product_id= o.product_id
+GROUP BY p.category;
+
+--Explanation: Computes the average profit earned from each product category.
+
+--Query 52: Orders by Customer Segment
+SELECT c.segment, 
+COUNT(o.order_id) AS total_orders
+FROM customers c
+JOIN orders o
+ON c.customer_id= o.customer_id
+GROUP BY c.segment;
+
+--Explanation: Counts the number of orders placed by each customer segment.
+
+--Query 53: Sales by Region  
+SELECT 
+c.region, 
+SUM(o.sales) AS total_sales 
+FROM customers c
+JOIN orders o
+ON c.customer_id= o.customer_id
+GROUP BY c.region
+ORDER BY total_sales DESC;
+
+--Explanation: Calculates total sales generated in each region.
+
+--Query 54: Profit by Region  
+SELECT 
+c.region, 
+SUM(o.profit) AS total_profit
+FROM customers c
+JOIN orders o
+ON c.customer_id= o.customer_id
+GROUP BY c.region
+ORDER BY total_profit DESC;
+
+--Explanation: Calculates total profit earned in each region.
+
+--Query 55: Sales by State 
+SELECT 
+c.state , 
+SUM(o.sales) AS total_sales 
+FROM customers c
+JOIN orders o
+ON c.customer_id= o.customer_id
+GROUP BY c.state
+ORDER BY total_sales DESC;
+
+--Explanation: Calculates total sales generated by each state. 
+
+--Query 56: Profit by State   
+SELECT 
+c.state , 
+SUM(o.profit) AS total_profit 
+FROM customers c
+JOIN orders o
+ON c.customer_id= o.customer_id
+GROUP BY c.state
+ORDER BY total_profit DESC;
+
+--Explanation: Calculates total profit generated by each state.
+
+--Query 57: Sales by Ship Mode
+SELECT
+o.ship_mode, 
+SUM(o.sales) AS total_sales 
+FROM orders o
+GROUP BY o.ship_mode
+ORDER BY total_sales DESC;
+
+--Explanation: Calculates total sales for each shipping mode.
+
+--Query 58: Average Shipping Days by Ship Mode
+SELECT 
+o.ship_mode,
+ROUND(AVG(shipping_days),2) AS avg_shipping_days  
+FROM orders o
+GROUP BY o.ship_mode;
+
+--Explanation: Computes the average delivery time for each shipping mode.
+
+--Query 59: Top 10 Customers by Sales 
+SELECT 
+c.customer_name,
+SUM(o.sales) AS total_sales 
+FROM customers c
+JOIN orders o
+ON c.customer_id= o.customer_id
+GROUP BY c.customer_name
+ORDER BY total_sales DESC
+LIMIT 10;
+
+--Explanation: Identifies the top 10 customers based on total sales.  
+
+--Query 60: Top 10 Products by Sales 
+SELECT 
+p.product_name,
+SUM(o.sales) AS total_sales 
+FROM products p
+JOIN orders o
+ON p.product_id= o.product_id
+GROUP BY p.product_name
+ORDER BY total_sales DESC
+LIMIT 10;
+
+--Explanation: Identifies the top 10 best-selling products based on total sales.    
+
+--Query 61: Rank Customers by Total Sales
+SELECT 
+c.customer_name,
+SUM(o.sales) AS total_sales,
+RANK() OVER(ORDER BY SUM(o.sales)DESC) AS sales_rank
+FROM customers c
+JOIN orders o
+ON c.customer_id= o.customer_id
+GROUP BY c.customer_name;
+
+--Explanation: Ranks customers based on their total sales using the RANK()
+window function.
+
+--Query 62: Rank Products by Total Profit
+SELECT 
+p.product_name,
+SUM(o.profit) AS total_profit, 
+RANK() OVER(ORDER BY SUM(o.profit)DESC) AS profit_rank
+FROM products p
+JOIN orders o
+ON p.product_id= o.product_id
+GROUP BY p.product_name;
+
+--Explanation: Ranks products according to total profit generated.
+
+--Query 63: Row Number for Every Order
+SELECT 
+row_id,
+order_id,
+sales,
+ROW_NUMBER() OVER(ORDER BY sales DESC) AS row_num
+FROM orders;
+
+--Explanation: Assigns a unique sequential number to each order based on
+sales.
+
+--Query 64: Dense Rank Based on Sales
+SELECT 
+order_id,
+sales,
+DENSE_RANK() OVER(ORDER BY sales DESC) AS dense_rank
+FROM orders;
+
+--Explanation: Assigns dense ranks to orders without skipping rank 
+numbers.
+
+--Query 65: Running Total of Sales
+SELECT
+order_date,
+sales,
+SUM(sales) OVER(ORDER BY order_date) AS running_sales
+FROM orders;
+
+--Explanation: Calculates the cumulative sales over time.
+
+--Query 66: Running Total of Profit
+SELECT
+order_date,
+profit,
+SUM(profit) OVER(ORDER BY order_date) AS running_profit
+FROM orders;
+
+--Explanation: Calculates the cumulative profit over time.
+
+--Query 67: Average Sales by Customer Segment
+SELECT c.segment, 
+ROUND(AVG(o.sales),2) AS average_sales 
+FROM customers c
+JOIN orders o
+ON c.customer_id= o.customer_id
+GROUP BY c.segment;
+
+--Explanation: Calculates the average sales generated by customer segment.
+
+--Query 68: Average Profit by Customer Segment  
+SELECT c.segment, 
+ROUND(AVG(o.profit),2) AS average_profit
+FROM customers c
+JOIN orders o
+ON c.customer_id= o.customer_id
+GROUP BY c.segment
+ORDER BY average_profit DESC;
+
+--Explanation: Calculates the average profit generated from each customer
+segment to identify the most profitable customer groups.
+
+--Query 69: Top 5 Most Profitable Products
+SELECT 
+p.product_name,
+SUM(o.profit) AS total_profit 
+FROM products p
+JOIN orders o
+ON p.product_id= o.product_id
+GROUP BY p.product_name
+ORDER BY total_profit  DESC
+LIMIT 5;
+
+--Explanation: Displays the five products generating the highest total
+profit.
+
+--Query 70: Bottom 5 Least Profitable Products
+SELECT 
+p.product_name,
+SUM(o.profit) AS total_profit 
+FROM products p
+JOIN orders o
+ON p.product_id= o.product_id
+GROUP BY p.product_name
+ORDER BY total_profit  
+LIMIT 5;
+
+--Explanation: Identifies the five least profitable products.
+
+--Query 71: Customers with Above Average Sales
+SELECT *
+FROM orders
+WHERE sales >
+(
+SELECT AVG(sales)
+FROM orders
+);
+
+--Explanation: Retrieves orders where sales exceeds the overall average
+sales.
+
+--Query 72: Products Never Sold
+SELECT 
+p.product_name
+FROM products p
+LEFT JOIN orders o
+ON p.product_id= o.product_id
+WHERE o.product_id IS NULL;
+
+--Explanation: Finds products that do not appear in any order.
+
+--Query 73: Number of Orders per Customer
+SELECT 
+c.customer_name,
+COUNT(o.order_id) AS total_orders
+FROM customers c
+LEFT JOIN orders o
+ON c.customer_id= o.customer_id
+GROUP BY c.customer_name
+ORDER BY total_orders DESC;
+
+--Explanation: Counts the number of orders placed by each customer.
+
+--Query 74: Customer with Highest Sales
+SELECT 
+c.customer_name,
+SUM(o.sales) AS total_sales 
+FROM customers c
+JOIN orders o
+ON c.customer_id= o.customer_id
+GROUP BY c.customer_name
+ORDER BY total_sales DESC
+LIMIT 1;
+
+--Explanation: Identifies the customer contributing the highest sales.
+
+--Query 75: Category with Highest Profit
+SELECT 
+p.category,
+SUM(o.profit) AS total_profit 
+FROM products p
+JOIN orders o
+ON p.product_id= o.product_id
+GROUP BY p.category
+ORDER BY total_profit DESC  
+LIMIT 1;
+
+--Explanation: Identifies the most profitable product category.
+
+--Query 76: Monthly Sales Analysis
+SELECT 
+order_month,
+SUM(sales) AS total_sales
+FROM orders 
+GROUP BY order_month
+ORDER BY total_sales DESC;
+
+--Explanation: Calculates total sales for each month.
+
+--Query 77: Quarterly Profit Analysis
+SELECT 
+order_quarter,
+SUM(profit) AS total_profit   
+FROM orders 
+GROUP BY order_quarter
+ORDER BY order_quarter;
+
+--Explanation: Calculates profit for each quarter of the year.
+
+--Query 78:  Average Shipping Days 
+SELECT 
+ROUND(AVG(shipping_days),2) AS average_shipping_days  
+FROM orders;
+
+--Explanation: Computes the average delivery time across all orders.
+
+--Query 79: Total Sales and Profit by Year
+SELECT 
+order_year,
+SUM(sales) AS total_sales,
+SUM(profit) AS total_profit   
+FROM orders 
+GROUP BY order_year
+ORDER BY order_year;
+
+--Explanation: Summarizes yearly sales and profit to evaluate annual
+business performance.
+
+--Query 80: Overall Business Performance Summary
+SELECT 
+COUNT(order_id)  AS total_orders,
+SUM(sales) AS total_sales,
+SUM(profit) AS total_profit,   
+ROUND(AVG(discount),2) AS average_discount
+FROM orders;
+
+--Explanation: Provides an overall summary of the business by reporting
+total orders,total sales,total profit, and average discount.
+
+
+
+
+
+
+
